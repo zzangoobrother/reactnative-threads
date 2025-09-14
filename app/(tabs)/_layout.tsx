@@ -1,11 +1,26 @@
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs, useRouter } from "expo-router";
+import { useState } from "react";
+import { Modal, View, Text, TouchableOpacity } from "react-native";
 
 export default function TabLayout() {
     const router = useRouter();
+    const isLoggedIn = false;
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-    return <Tabs
+    const openLoginModal = () => {
+        setIsLoginModalOpen(true);
+    }
+
+    const closeLoginModal = () => {
+        setIsLoginModalOpen(false);
+    }
+
+    return (
+    <>
+    <Tabs
         screenOptions={{headerShown: false}}
+        backBehavior="history"
     >
         <Tabs.Screen 
         name="(home)" 
@@ -39,7 +54,11 @@ export default function TabLayout() {
             listeners={{
                 tabPress: (e) => {
                     e.preventDefault();
-                    router.navigate("/modal");
+                    if (isLoggedIn) {
+                        router.navigate("/modal");
+                    } else {
+                        openLoginModal();
+                    }
                 }
             }}
             options={{
@@ -54,7 +73,15 @@ export default function TabLayout() {
             }}
         />
         <Tabs.Screen 
-            name="activity" 
+            name="activity"
+            listeners={{
+                tabPress: (e) => {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        openLoginModal();
+                    }
+                }
+            }}
             options={{
             tabBarLabel: () => null,
             tabBarIcon: ({focused}) => (
@@ -68,6 +95,14 @@ export default function TabLayout() {
         />
         <Tabs.Screen 
             name="[username]" 
+            listeners={{
+                tabPress: (e) => {
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        openLoginModal();
+                    }
+                }
+            }}
             options={{
             tabBarLabel: () => null,
             tabBarIcon: ({focused}) => (
@@ -85,5 +120,26 @@ export default function TabLayout() {
                 href: null,
             }}
         />
-    </Tabs>;
+    </Tabs>
+
+    <Modal
+        visible={isLoginModalOpen}
+        transparent={true}
+        animationType="slide"
+    >
+        <View style={{
+            flex: 1,
+            justifyContent: "flex-end",
+            backgroundColor: "rgba(0, 0, 0, 0.5)"
+        }}>
+            <View style={{backgroundColor: "white", padding: 20}}>
+                <Text>Login Modal</Text>
+                    <TouchableOpacity onPress={closeLoginModal}>
+                        <Ionicons name="close" size={24} color="#555" />
+                </TouchableOpacity>
+            </View>
+        </View>
+    </Modal>
+    </>
+    );
 }

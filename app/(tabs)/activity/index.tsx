@@ -1,4 +1,4 @@
-import { Redirect, usePathname, useRouter } from "expo-router";
+import { usePathname, useRouter } from "expo-router";
 import { Text, View, TouchableOpacity } from "react-native";
 import NotFound from "@/app/+not-found";
 
@@ -6,7 +6,7 @@ export default function Index() {
   const router = useRouter();
   const pathname = usePathname();
 
-  if (["/activity", "/activity/follows", "/activity/mentions", "/activity/quotes", "/activity/reposts", "/activity/verified"].includes(pathname)) {
+  if (!["/activity", "/activity/follows", "/activity/mentions", "/activity/quotes", "/activity/reposts", "/activity/verified"].includes(pathname)) {
     return <NotFound />
   }
 
