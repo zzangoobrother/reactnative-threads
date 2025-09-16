@@ -37,7 +37,10 @@
     "react-native-screens": "~4.16.0",
     "react-native-web": "~0.21.0",
     "expo-dev-client": "~6.0.12",
-    "expo-blur": "~15.0.7"
+    "expo-blur": "~15.0.7",
+    "expo-location": "~19.0.7",
+    "expo-media-library": "~18.1.1",
+    "expo-image-picker": "~17.0.8"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
